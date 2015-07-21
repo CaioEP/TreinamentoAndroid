@@ -2,30 +2,44 @@ package com.example.administrador.myapplication;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
-import android.widget.Button;
-import android.widget.TextView;
-import android.widget.Toast;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class MainActivity extends AppCompatActivity {
-
-    private static final String TAG = MainActivity.class.getSimpleName();
-
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        final TextView minhaView = (TextView) findViewById(R.id.textView);
-        Log.i(TAG, "onCreate " + minhaView.getText());
-        minhaView.setText(getString(R.string.sin));
-        Button butao = (Button)findViewById(R.id.butao);
-        butao.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(MainActivity.this,"Oi tudo bem como vai!",Toast.LENGTH_SHORT).show();
-                minhaView.setText("Alterei");
-            }
-        });
+
+        List<Client> clients = getClients();
+
+        ListView listViewClients = (ListView) findViewById(R.id.listViewClient);
+
+        ClientListAdapter clientListAdapter = new ClientListAdapter(MainActivity.this, clients);
+
+        listViewClients.setAdapter(clientListAdapter);
+
+    }
+
+    private List<Client> getClients() {
+        List<Client> clients = new ArrayList<Client>();
+
+        Client client1 = new Client();
+        client1.setName("Caio");
+        client1.setAge(20);
+
+        Client client2 = new Client();
+        client2.setName("Bruna");
+        client2.setAge(19);
+
+        clients.add(client1);
+        clients.add(client2);
+
+        return clients;
     }
 }
