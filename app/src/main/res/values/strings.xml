@@ -6,4 +6,13 @@
     <string name="login">Login</string>
     <string name="userName">User Name</string>
     <string name="password">Password</string>
+    <string name="addressDivider">Address</string>
+    <string name="clientDivider">Client</string>
+    <string name="street">Street</string>
+    <string name="city">City</string>
+    <string name="state">State</string>
+    <string name="name">Name</string>
+    <string name="birthDate">Birth Date</string>
+    <string name="save">Save</string>
+    <string name="add">Add</string>
 </resources>

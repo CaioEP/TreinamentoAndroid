@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Lalali</string>
+
+    <string name="hello_world">Olá Marilene</string>
+    <string name="action_settings">Opções</string>
+    <string name="login">Entrar</string>
+    <string name="userName">Nome</string>
+    <string name="password">Senha</string>
+    <string name="addressDivider">Endereço</string>
+    <string name="clientDivider">Cliente</string>
+    <string name="street">Rua</string>
+    <string name="city">Cidade</string>
+    <string name="state">Estado</string>
+    <string name="name">Nome</string>
+    <string name="birthDate">Data de Nascimento</string>
+    <string name="save">Salvar</string>
+</resources>

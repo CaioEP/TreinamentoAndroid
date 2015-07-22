@@ -1,11 +1,13 @@
-package com.example.administrador.myapplication;
+package com.example.administrador.myapplication.controller;
 
 import android.app.Activity;
-import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
+
+import com.example.administrador.myapplication.model.entities.Client;
+import com.example.administrador.myapplication.R;
 
 import java.util.List;
 
@@ -44,6 +46,12 @@ public class ClientListAdapter extends BaseAdapter{
         textViewName.setText(client.getName());
         TextView textViewAge = (TextView) view.findViewById(R.id.textViewAge);
         textViewAge.setText(client.getAge().toString());
+        TextView textViewAddressCity = (TextView) view.findViewById(R.id.textViewAddressCity);
+        textViewAddressCity.setText(client.getAddress().getCity());
+        TextView textViewAddressStreet = (TextView) view.findViewById(R.id.textViewAddressStreet);
+        textViewAddressStreet.setText(client.getAddress().getStreet());
+        TextView textViewAddressState = (TextView) view.findViewById(R.id.textViewAddressState);
+        textViewAddressState.setText(client.getAddress().getState());
 
         return view;
     }
