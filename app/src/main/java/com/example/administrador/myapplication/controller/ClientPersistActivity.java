@@ -12,16 +12,16 @@ import com.example.administrador.myapplication.R;
 import com.example.administrador.myapplication.model.entities.Address;
 import com.example.administrador.myapplication.model.entities.Client;
 import com.example.administrador.myapplication.model.persistence.MemoryClientRepository;
+import com.example.administrador.myapplication.util.FormHelper;
 
-/**
- * Created by Administrador on 21/07/2015.
- */
 public class ClientPersistActivity extends AppCompatActivity {
-    EditText clientName;
-    EditText clientAge;
-    EditText clientAddressCity;
-    EditText clientAddressState;
-    EditText clientAddressStreet;
+    public static String CLIENT_PARAM = "CLIENT_PARAM";
+    private Client client;
+    private EditText clientName;
+    private EditText clientAge;
+    private EditText clientAddressCity;
+    private EditText clientAddressState;
+    private EditText clientAddressStreet;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +32,15 @@ public class ClientPersistActivity extends AppCompatActivity {
         clientAddressCity = (EditText) findViewById(R.id.clientAddressCity);
         clientAddressState = (EditText) findViewById(R.id.clientAddressState);
         clientAddressStreet = (EditText) findViewById(R.id.clientAddressStreet);
+
+        Bundle extras = getIntent().getExtras();
+        if(extras != null){
+            client = (Client) extras.getParcelable(CLIENT_PARAM);
+            if(client == null){
+                throw new IllegalArgumentException();
+            }
+            bindForm(client);
+        }
     }
 
     @Override
@@ -42,17 +51,21 @@ public class ClientPersistActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if(item.getItemId() == R.id.menu_save){
-            bindClient().Save();
-            Toast.makeText(ClientPersistActivity.this,Client.getAll().toString(),Toast.LENGTH_SHORT).show();
-            finish();
-        }
+        if (item.getItemId() == R.id.menu_save) {
 
+
+            if (FormHelper.requireValidate(ClientPersistActivity.this, clientName, clientAge, clientAddressCity, clientAddressState, clientAddressStreet)) {
+                bindClient();
+                client.Save();
+                Toast.makeText(ClientPersistActivity.this, getString(R.string.save_confirm_message), Toast.LENGTH_SHORT).show();
+                finish();
+            }
+        }
         return super.onOptionsItemSelected(item);
     }
 
-    private Client bindClient(){
-        Client client = new Client();
+    private void bindClient() {
+        client = new Client();
         client.setName(clientName.getText().toString());
         client.setAge(Integer.valueOf(clientAge.getText().toString()));
         Address address = new Address();
@@ -61,7 +74,13 @@ public class ClientPersistActivity extends AppCompatActivity {
         address.setState(clientAddressState.getText().toString());
         client.setAddress(address);
         clearFields();
-        return client;
+    }
+    private void bindForm(Client client) {
+        clientAddressState.setText(client.getAddress().getState());
+        clientAddressStreet.setText(client.getAddress().getStreet());
+        clientAddressCity.setText(client.getAddress().getCity());
+        clientName.setText(client.getName());
+        clientAge.setText(client.getAge().toString());
     }
 
     private void clearFields() {

@@ -15,4 +15,10 @@
     <string name="name">Nome</string>
     <string name="birthDate">Data de Nascimento</string>
     <string name="save">Salvar</string>
+    <string name="add">Adicionar</string>
+    <string name="required_field">Campo Obrigatório</string>
+    <string name="save_confirm_message">Salvo com sucesso</string>
+    <string name="edit">Editar</string>
+    <string name="delete">Deletar</string>
+    <string name="delete_confirm_message">Deletado com sucesso</string>
 </resources>

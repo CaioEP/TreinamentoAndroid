@@ -1,13 +1,26 @@
 package com.example.administrador.myapplication.model.entities;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.example.administrador.myapplication.model.persistence.MemoryClientRepository;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class Client {
+public class Client implements Parcelable{
     private String name;
     private Integer age;
     private Address address;
+
+    public Client(){
+        super();
+    }
+
+    public Client(Parcel in){
+        super();
+        readToParcel(in);
+    }
 
     public Address getAddress() {
         return address;
@@ -42,6 +55,8 @@ public class Client {
         return MemoryClientRepository.getInstance().getAll();
     }
 
+    public void delete() {MemoryClientRepository.getInstance().delete(this);}
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -69,4 +84,36 @@ public class Client {
                 ", address=" + address +
                 '}';
     }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(name == null ? "" : name);
+        dest.writeInt(age == null ? -1 : age);
+        dest.writeParcelable(address , flags);
+    }
+
+    private void readToParcel(Parcel in) {
+        name = in.readString();
+        int partialAge = in.readInt();
+        age = partialAge == -1 ? null : partialAge;
+        address = in.<Address>readParcelable(Address.class.getClassLoader());
+    }
+
+    public static final Parcelable.Creator<Client> CREATOR = new Parcelable.Creator<Client>(){
+
+        @Override
+        public Client createFromParcel(Parcel source) {
+            return new Client(source);
+        }
+
+        @Override
+        public Client[] newArray(int size) {
+            return new Client[size];
+        }
+    };
 }

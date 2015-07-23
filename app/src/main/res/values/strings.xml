@@ -15,4 +15,9 @@
     <string name="birthDate">Birth Date</string>
     <string name="save">Save</string>
     <string name="add">Add</string>
+    <string name="required_field">Field is Required</string>
+    <string name="save_confirm_message">Saved successfully</string>
+    <string name="edit">Edit</string>
+    <string name="delete">Delete</string>
+    <string name="delete_confirm_message">Succesfully deleted</string>
 </resources>
