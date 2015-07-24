@@ -20,4 +20,8 @@
     <string name="edit">Edit</string>
     <string name="delete">Delete</string>
     <string name="delete_confirm_message">Succesfully deleted</string>
+    <string name="confirm_progress">Are you sure?</string>
+    <string name="yes">Yes</string>
+    <string name="title_delete_confirm">Delete</string>
+    <string name="no">No</string>
 </resources>
