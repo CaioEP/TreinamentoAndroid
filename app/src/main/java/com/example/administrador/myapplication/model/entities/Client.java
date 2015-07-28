@@ -118,7 +118,7 @@ public class Client implements Parcelable{
         age = partialAge == -1 ? null : partialAge;
         int partialId = in.readInt();
         id = partialId == -1 ? null : partialId;
-        address = in.<Address>readParcelable(Address.class.getClassLoader());
+        address = in.readParcelable(Address.class.getClassLoader());
     }
 
     public static final Parcelable.Creator<Client> CREATOR = new Parcelable.Creator<Client>(){

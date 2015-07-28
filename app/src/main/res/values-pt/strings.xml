@@ -21,4 +21,8 @@
     <string name="edit">Editar</string>
     <string name="delete">Deletar</string>
     <string name="delete_confirm_message">Deletado com sucesso</string>
+    <string name="cep">CEP</string>
+    <string name="find">Pesquisar</string>
+    <string name="neighborhood">Bairro</string>
+    <string name="loading">Carregando...</string>
 </resources>

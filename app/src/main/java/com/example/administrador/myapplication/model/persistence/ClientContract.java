@@ -18,8 +18,11 @@ public class ClientContract {
     public static final String CITY = "city";
     public static final String STREET = "street";
     public static final String STATE = "state";
+    public static final String NEIGHBORHOOD = "neighborhood";
+    public static final String ZIPCODE = "zipcode";
+    public static final String STREETTYPE = "street_type";
 
-    public static final String[] COLUNS = {ID, NAME, AGE, CITY, STREET, STATE};
+    public static final String[] COLUNS = {ID, NAME, AGE, CITY, STREET, STATE, NEIGHBORHOOD,ZIPCODE,STREETTYPE};
 
     public static String getSqlCreateTable() {
         StringBuilder sql = new StringBuilder();
@@ -31,7 +34,10 @@ public class ClientContract {
                 .append(AGE + " INTEGER, ")
                 .append(CITY + " TEXT, ")
                 .append(STREET + " TEXT, ")
-                .append(STATE + " TEXT ")
+                .append(STATE + " TEXT, ")
+                .append(NEIGHBORHOOD + " TEXT, ")
+                .append(STREETTYPE + " TEXT, ")
+                .append(ZIPCODE + " TEXT ")
                 .append(" ); ");
         return sql.toString();
     }
@@ -39,11 +45,14 @@ public class ClientContract {
     public static ContentValues getContentValues(Client client) {
         ContentValues values = new ContentValues();
         values.put(ClientContract.ID, client.getId());
-        values.put(ClientContract.NAME, client.getName());
         values.put(ClientContract.AGE, client.getAge());
+        values.put(ClientContract.NAME, client.getName());
         values.put(ClientContract.CITY, client.getAddress().getCity());
         values.put(ClientContract.STATE, client.getAddress().getState());
         values.put(ClientContract.STREET, client.getAddress().getStreet());
+        values.put(ClientContract.ZIPCODE, client.getAddress().getZipCode());
+        values.put(ClientContract.STREETTYPE, client.getAddress().getStreetType());
+        values.put(ClientContract.NEIGHBORHOOD, client.getAddress().getNeighborhood());
         return values;
     }
 
@@ -59,6 +68,10 @@ public class ClientContract {
             address.setCity(cursor.getString(cursor.getColumnIndex(ClientContract.CITY)));
             address.setStreet(cursor.getString(cursor.getColumnIndex(ClientContract.STREET)));
             address.setState(cursor.getString(cursor.getColumnIndex(ClientContract.STATE)));
+            address.setZipCode(cursor.getString(cursor.getColumnIndex(ClientContract.ZIPCODE)));
+            address.setStreetType(cursor.getString(cursor.getColumnIndex(ClientContract.STREETTYPE)));
+            address.setNeighborhood(cursor.getString(cursor.getColumnIndex(ClientContract.NEIGHBORHOOD)));
+
 
             client.setAddress(address);
 
