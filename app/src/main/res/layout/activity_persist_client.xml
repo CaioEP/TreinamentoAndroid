@@ -37,6 +37,13 @@
             android:hint="@string/birthDate"
             android:inputType="number" />
 
+        <EditText
+            android:id="@+id/clientPhone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/phoneNumber"
+            android:inputType="number" />
+
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

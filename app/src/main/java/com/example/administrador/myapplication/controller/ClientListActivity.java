@@ -3,6 +3,7 @@ package com.example.administrador.myapplication.controller;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.v7.app.AppCompatActivity;
@@ -11,12 +12,16 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 
 import com.example.administrador.myapplication.model.entities.Client;
 import com.example.administrador.myapplication.R;
 import com.example.administrador.myapplication.model.persistence.MemoryClientRepository;
+import com.melnykov.fab.FloatingActionButton;
+
+import org.apache.http.protocol.HTTP;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,10 +30,13 @@ import java.util.List;
 public class ClientListActivity extends AppCompatActivity {
     private ListView listViewClients;
     private Client client;
+    private FloatingActionButton btnAdd;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        bindLoginButton();
         bindClientList();
     }
 
@@ -37,6 +45,16 @@ public class ClientListActivity extends AppCompatActivity {
         listViewClients = (ListView) findViewById(R.id.listViewClient);
         ClientListAdapter clientListAdapter = new ClientListAdapter(ClientListActivity.this, clients);
         listViewClients.setAdapter(clientListAdapter);
+        listViewClients.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Client client = (Client) parent.getItemAtPosition(position);
+                // Best Practices: http://stackoverflow.com/questions/4275678/how-to-make-phone-call-using-intent-in-android
+                final Intent goToSOPhoneCall = new Intent(Intent.ACTION_DIAL /* or Intent.ACTION_DIAL (no manifest permission needed) */);
+                goToSOPhoneCall.setData(Uri.parse("tel:" + client.getPhone()));
+                startActivity(goToSOPhoneCall);
+            }
+        });
         listViewClients.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
@@ -59,6 +77,17 @@ public class ClientListActivity extends AppCompatActivity {
         adapter.notifyDataSetChanged();
     }
 
+    private void bindLoginButton() {
+        btnAdd = (FloatingActionButton) findViewById(R.id.fabAdd);
+        btnAdd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent goToMainActivity = new Intent(ClientListActivity.this, ClientPersistActivity.class);
+                startActivity(goToMainActivity);
+            }
+        });
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_client_add, menu);
@@ -68,8 +97,19 @@ public class ClientListActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.menu_add) {
-            Intent goToClientPersistActivity = new Intent(ClientListActivity.this, ClientPersistActivity.class);
-            startActivity(goToClientPersistActivity);
+            // Create the text message with a string
+            final Intent sendIntent = new Intent(Intent.ACTION_SEND);
+            sendIntent.putExtra(Intent.EXTRA_TEXT, "Seu texto aqui...");
+            sendIntent.setType(HTTP.PLAIN_TEXT_TYPE);
+
+            // Create intent to show the chooser dialog
+            final Intent chooser = Intent.createChooser(sendIntent, "Titulo Chooser");
+
+            // Verify the original intent will resolve to at least one activity
+            if (sendIntent.resolveActivity(getPackageManager()) != null) {
+                startActivity(chooser);
+            }
+            return true;
         }
 
         return super.onOptionsItemSelected(item);

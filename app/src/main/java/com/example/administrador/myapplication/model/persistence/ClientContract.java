@@ -21,8 +21,9 @@ public class ClientContract {
     public static final String NEIGHBORHOOD = "neighborhood";
     public static final String ZIPCODE = "zipcode";
     public static final String STREETTYPE = "street_type";
+    private static final String PHONE = "phone";
+    public static final String[] COLUNS = {ID, NAME, AGE, PHONE, CITY, STREET, STATE, NEIGHBORHOOD,ZIPCODE,STREETTYPE};
 
-    public static final String[] COLUNS = {ID, NAME, AGE, CITY, STREET, STATE, NEIGHBORHOOD,ZIPCODE,STREETTYPE};
 
     public static String getSqlCreateTable() {
         StringBuilder sql = new StringBuilder();
@@ -32,6 +33,7 @@ public class ClientContract {
                 .append(ID + " INTEGER PRIMARY KEY, ")
                 .append(NAME + " TEXT, ")
                 .append(AGE + " INTEGER, ")
+                .append(PHONE + " TEXT, ")
                 .append(CITY + " TEXT, ")
                 .append(STREET + " TEXT, ")
                 .append(STATE + " TEXT, ")
@@ -47,6 +49,7 @@ public class ClientContract {
         values.put(ClientContract.ID, client.getId());
         values.put(ClientContract.AGE, client.getAge());
         values.put(ClientContract.NAME, client.getName());
+        values.put(ClientContract.PHONE, client.getPhone());
         values.put(ClientContract.CITY, client.getAddress().getCity());
         values.put(ClientContract.STATE, client.getAddress().getState());
         values.put(ClientContract.STREET, client.getAddress().getStreet());
@@ -63,6 +66,7 @@ public class ClientContract {
             client.setId(cursor.getInt(cursor.getColumnIndex(ClientContract.ID)));
             client.setName(cursor.getString(cursor.getColumnIndex(ClientContract.NAME)));
             client.setAge(cursor.getInt(cursor.getColumnIndex(ClientContract.AGE)));
+            client.setPhone(cursor.getString(cursor.getColumnIndex(ClientContract.PHONE)));
 
             Address address = new Address();
             address.setCity(cursor.getString(cursor.getColumnIndex(ClientContract.CITY)));

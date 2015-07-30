@@ -13,7 +13,16 @@ public class Client implements Parcelable{
     private Integer id;
     private String name;
     private Integer age;
+    private String phone;
     private Address address;
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
 
     public Integer getId() {
         return id;
@@ -77,7 +86,9 @@ public class Client implements Parcelable{
         if (id != null ? !id.equals(client.id) : client.id != null) return false;
         if (name != null ? !name.equals(client.name) : client.name != null) return false;
         if (age != null ? !age.equals(client.age) : client.age != null) return false;
+        if (phone != null ? !phone.equals(client.phone) : client.phone != null) return false;
         return !(address != null ? !address.equals(client.address) : client.address != null);
+
     }
 
     @Override
@@ -85,6 +96,7 @@ public class Client implements Parcelable{
         int result = id != null ? id.hashCode() : 0;
         result = 31 * result + (name != null ? name.hashCode() : 0);
         result = 31 * result + (age != null ? age.hashCode() : 0);
+        result = 31 * result + (phone != null ? phone.hashCode() : 0);
         result = 31 * result + (address != null ? address.hashCode() : 0);
         return result;
     }
@@ -95,6 +107,7 @@ public class Client implements Parcelable{
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", age=" + age +
+                ", phone='" + phone + '\'' +
                 ", address=" + address +
                 '}';
     }
@@ -109,6 +122,7 @@ public class Client implements Parcelable{
         dest.writeString(name == null ? "" : name);
         dest.writeInt(age == null ? -1 : age);
         dest.writeInt(id == null ? -1 : id);
+        dest.writeString(phone == null ? "" : phone);
         dest.writeParcelable(address , flags);
     }
 
@@ -118,6 +132,7 @@ public class Client implements Parcelable{
         age = partialAge == -1 ? null : partialAge;
         int partialId = in.readInt();
         id = partialId == -1 ? null : partialId;
+        phone = in.readString();
         address = in.readParcelable(Address.class.getClassLoader());
     }
 

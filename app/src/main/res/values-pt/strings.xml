@@ -19,10 +19,15 @@
     <string name="required_field">Campo Obrigatório</string>
     <string name="save_confirm_message">Salvo com sucesso</string>
     <string name="edit">Editar</string>
-    <string name="delete">Deletar</string>
-    <string name="delete_confirm_message">Deletado com sucesso</string>
+    <string name="delete">Excluir</string>
+    <string name="delete_confirm_message">Excluído com sucesso</string>
+    <string name="confirm_progress">Tem certeza?</string>
+    <string name="yes">Sim</string>
+    <string name="title_delete_confirm">Excluir</string>
+    <string name="no">Não</string>
     <string name="cep">CEP</string>
     <string name="find">Pesquisar</string>
     <string name="neighborhood">Bairro</string>
     <string name="loading">Carregando...</string>
+    <string name="phoneNumber">Telefone</string>
 </resources>

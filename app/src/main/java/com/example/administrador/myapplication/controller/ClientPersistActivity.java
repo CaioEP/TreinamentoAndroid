@@ -1,11 +1,18 @@
 package com.example.administrador.myapplication.controller;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Intent;
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -25,6 +32,7 @@ public class ClientPersistActivity extends AppCompatActivity {
     private Client client;
     private EditText clientName;
     private EditText clientAge;
+    private EditText clientPhone;
     private EditText clientAddressCity;
     private EditText clientAddressState;
     private EditText clientAddressStreet;
@@ -53,13 +61,61 @@ public class ClientPersistActivity extends AppCompatActivity {
 
     private void bindFields() {
         clientName = (EditText) findViewById(R.id.clientName);
+        clientName.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_edittext_client, 0);
+        clientName.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                final int DRAWABLE_LEFT = 0;
+                final int DRAWABLE_TOP = 1;
+                final int DRAWABLE_RIGHT = 2;
+                final int DRAWABLE_BOTTOM = 3;
+
+                if (event.getAction() == MotionEvent.ACTION_UP) {
+                    if (event.getRawX() >= (clientName.getRight() - clientName.getCompoundDrawables()[DRAWABLE_RIGHT].getBounds().width())) {
+                        //TODO: Explanation 2:
+                        final Intent goToSOContacts = new Intent(Intent.ACTION_PICK, ContactsContract.Contacts.CONTENT_URI);
+                        goToSOContacts.setType(ContactsContract.CommonDataKinds.Phone.CONTENT_TYPE); // Show user only contacts w/ phone numbers
+                        startActivityForResult(goToSOContacts, 999);
+                    }
+                }
+                return false;
+            }
+        });
         clientAge = (EditText) findViewById(R.id.clientAge);
+        clientPhone = (EditText) findViewById(R.id.clientPhone);
         clientAddressCity = (EditText) findViewById(R.id.clientAddressCity);
         clientAddressState = (EditText) findViewById(R.id.clientAddressState);
         clientAddressStreet = (EditText) findViewById(R.id.clientAddressStreet);
         clientAddressZipCode = (EditText) findViewById(R.id.editTextCep);
         clientAddressNeighborhood = (EditText) findViewById(R.id.clientAddressNeighborhood);
         bindButtonFindCep();
+    }
+    /**
+     * @see <a href="http://developer.android.com/training/basics/intents/result.html">Getting a Result from an Activity</a>
+     */
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == 999) {
+            if (resultCode == Activity.RESULT_OK) {
+                try {
+                    final Uri contactUri = data.getData();
+                    final String[] projection = {
+                            ContactsContract.CommonDataKinds.Identity.DISPLAY_NAME,
+                            ContactsContract.CommonDataKinds.Phone.NUMBER
+                    };
+                    final Cursor cursor = getContentResolver().query(contactUri, projection, null, null, null);
+                    cursor.moveToFirst();
+
+                    clientName.setText(cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Identity.DISPLAY_NAME)));
+                    clientPhone.setText(cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER)));
+
+                    cursor.close();
+                } catch (Exception e) {
+                    Log.d("TAG", "Unexpected error");
+                }
+            }
+        }
+        super.onActivityResult(requestCode, resultCode, data);
     }
 
     private void bindButtonFindCep() {
@@ -98,7 +154,7 @@ public class ClientPersistActivity extends AppCompatActivity {
         if (item.getItemId() == R.id.menu_save) {
 
 
-            if (FormHelper.requireValidate(ClientPersistActivity.this, clientName, clientAge, clientAddressCity, clientAddressState, clientAddressStreet,clientAddressNeighborhood, clientAddressZipCode)) {
+            if (FormHelper.requireValidate(ClientPersistActivity.this, clientName, clientAge, clientPhone, clientAddressCity, clientAddressState, clientAddressStreet,clientAddressNeighborhood, clientAddressZipCode)) {
                 bindClient();
                 client.Save();
                 Toast.makeText(ClientPersistActivity.this, getString(R.string.save_confirm_message), Toast.LENGTH_SHORT).show();
@@ -114,6 +170,7 @@ public class ClientPersistActivity extends AppCompatActivity {
         }
         client.setName(clientName.getText().toString());
         client.setAge(Integer.valueOf(clientAge.getText().toString()));
+        client.setPhone(client.getPhone());
         Address address = new Address();
         address.setCity(clientAddressCity.getText().toString());
         address.setStreet(clientAddressStreet.getText().toString());
@@ -132,11 +189,13 @@ public class ClientPersistActivity extends AppCompatActivity {
         clientAddressNeighborhood.setText(client.getAddress().getNeighborhood());
         clientName.setText(client.getName());
         clientAge.setText(client.getAge().toString());
+        clientPhone.setText(client.getPhone());
     }
 
     private void clearFields() {
         clientName.setText("");
         clientAge.setText("");
+        clientPhone.setText("");
         clientAddressState.setText("");
         clientAddressCity.setText("");
         clientAddressStreet.setText("");
