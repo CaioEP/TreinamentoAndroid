@@ -9,10 +9,9 @@ import com.example.administrador.myapplication.model.entities.Client;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ClientContract {
+public class ClientContract extends BaseContract{
 
     public static final String TABLE = "client";
-    public static final String ID = "id";
     public static final String NAME = "name";
     public static final String AGE = "age";
     public static final String CITY = "city";
@@ -22,7 +21,7 @@ public class ClientContract {
     public static final String ZIPCODE = "zipcode";
     public static final String STREETTYPE = "street_type";
     private static final String PHONE = "phone";
-    public static final String[] COLUNS = {ID, NAME, AGE, PHONE, CITY, STREET, STATE, NEIGHBORHOOD,ZIPCODE,STREETTYPE};
+    public static final String[] COLUMNS = {ID, NAME, AGE, PHONE, CITY, STREET, STATE, NEIGHBORHOOD,ZIPCODE,STREETTYPE};
 
 
     public static String getSqlCreateTable() {
@@ -40,7 +39,7 @@ public class ClientContract {
                 .append(NEIGHBORHOOD + " TEXT, ")
                 .append(STREETTYPE + " TEXT, ")
                 .append(ZIPCODE + " TEXT ")
-                .append(" ); ");
+                .append(" );");
         return sql.toString();
     }
 

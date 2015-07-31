@@ -4,12 +4,14 @@ import com.example.administrador.myapplication.model.entities.Client;
 
 import java.util.List;
 
-public interface ClientRepository {
+public interface BaseRepository<T> {
 
-    void save(Client client);
+    void save(T obj);
 
-    List<Client> getAll();
+    List<T> getAll();
 
-    void delete(Client client);
+    void delete(T obj);
+
+    boolean authentication(T obj);
 
 }

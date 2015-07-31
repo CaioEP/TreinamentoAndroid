@@ -13,7 +13,6 @@
     <string name="city">Cidade</string>
     <string name="state">Estado</string>
     <string name="name">Nome</string>
-    <string name="birthDate">Data de Nascimento</string>
     <string name="save">Salvar</string>
     <string name="add">Adicionar</string>
     <string name="required_field">Campo Obrigatório</string>
@@ -30,4 +29,7 @@
     <string name="neighborhood">Bairro</string>
     <string name="loading">Carregando...</string>
     <string name="phoneNumber">Telefone</string>
+    <string name="authentication_cofirm_success">Logado com sucesso</string>
+    <string name="authentication_cofirm_fail">Falha no Login</string>
+    <string name="age">Idade</string>
 </resources>

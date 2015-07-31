@@ -12,18 +12,15 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 
 import com.example.administrador.myapplication.model.entities.Client;
 import com.example.administrador.myapplication.R;
-import com.example.administrador.myapplication.model.persistence.MemoryClientRepository;
 import com.melnykov.fab.FloatingActionButton;
 
 import org.apache.http.protocol.HTTP;
 
-import java.util.ArrayList;
 import java.util.List;
 
 

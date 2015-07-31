@@ -1,17 +1,14 @@
 package com.example.administrador.myapplication.model.persistence;
 
 import android.content.ContentValues;
-import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
-import com.example.administrador.myapplication.model.entities.Address;
 import com.example.administrador.myapplication.model.entities.Client;
 import com.example.administrador.myapplication.util.AppUtil;
 
-import java.util.ArrayList;
 import java.util.List;
 
-public class SQLiteClientRepository implements ClientRepository{
+public class SQLiteClientRepository implements BaseRepository<Client> {
 
    private static SQLiteClientRepository singletonInstance;
 
@@ -19,7 +16,7 @@ public class SQLiteClientRepository implements ClientRepository{
         super();
     }
 
-    public static ClientRepository getInstance(){
+    public static BaseRepository getInstance(){
         if(SQLiteClientRepository.singletonInstance == null){
             SQLiteClientRepository.singletonInstance = new SQLiteClientRepository();
         }
@@ -46,7 +43,7 @@ public class SQLiteClientRepository implements ClientRepository{
     public List<Client> getAll() {
         DatabaseHelper helper = new DatabaseHelper(AppUtil.CONTEXT);
         SQLiteDatabase db = helper.getReadableDatabase();
-        return ClientContract.getBindClientList(db.query(ClientContract.TABLE, ClientContract.COLUNS, null, null, null, null, ClientContract.NAME));
+        return ClientContract.getBindClientList(db.query(ClientContract.TABLE, ClientContract.COLUMNS, null, null, null, null, ClientContract.NAME));
     }
 
     @Override
@@ -56,5 +53,10 @@ public class SQLiteClientRepository implements ClientRepository{
         String where = ClientContract.ID + " = ?";
         String[] args = {client.getId().toString()};
         db.delete(ClientContract.TABLE,where,args);
+    }
+
+    @Override
+    public boolean authentication(Client obj) {
+        return false;
     }
 }

@@ -14,14 +14,12 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.administrador.myapplication.R;
 import com.example.administrador.myapplication.model.entities.Address;
 import com.example.administrador.myapplication.model.entities.Client;
-import com.example.administrador.myapplication.model.persistence.MemoryClientRepository;
 import com.example.administrador.myapplication.model.services.CepService;
 import com.example.administrador.myapplication.util.FormHelper;
 
@@ -38,7 +36,6 @@ public class ClientPersistActivity extends AppCompatActivity {
     private EditText clientAddressStreet;
     private EditText clientAddressNeighborhood;
     private EditText clientAddressZipCode;
-    private Button buttonFindZipCode;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,8 +84,24 @@ public class ClientPersistActivity extends AppCompatActivity {
         clientAddressState = (EditText) findViewById(R.id.clientAddressState);
         clientAddressStreet = (EditText) findViewById(R.id.clientAddressStreet);
         clientAddressZipCode = (EditText) findViewById(R.id.editTextCep);
+        clientAddressZipCode.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_action_action_search, 0);
+        clientAddressZipCode.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                final int DRAWABLE_LEFT = 0;
+                final int DRAWABLE_TOP = 1;
+                final int DRAWABLE_RIGHT = 2;
+                final int DRAWABLE_BOTTOM = 3;
+
+                if (event.getAction() == MotionEvent.ACTION_UP) {
+                    if (event.getRawX() >= (clientAddressZipCode.getRight() - clientAddressZipCode.getCompoundDrawables()[DRAWABLE_RIGHT].getBounds().width())) {
+                        new GetAddressByCep().execute(clientAddressZipCode.getText().toString());
+                    }
+                }
+                return false;
+            }
+        });
         clientAddressNeighborhood = (EditText) findViewById(R.id.clientAddressNeighborhood);
-        bindButtonFindCep();
     }
     /**
      * @see <a href="http://developer.android.com/training/basics/intents/result.html">Getting a Result from an Activity</a>
@@ -118,31 +131,6 @@ public class ClientPersistActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
     }
 
-    private void bindButtonFindCep() {
-        buttonFindZipCode = (Button) findViewById(R.id.buttonFindCep);
-        buttonFindZipCode.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                AsyncTask<String, Void, Address> execute = new GetAddressByCep().execute(clientAddressZipCode.getText().toString());
-
-                try {
-                    Address address = execute.get();
-                    clientAddressCity.setText(address.getCity());
-                    clientAddressState.setText(address.getState());
-                    clientAddressStreet.setText(address.getStreet());
-                    clientAddressZipCode.setText(address.getZipCode());
-                    clientAddressNeighborhood.setText(address.getNeighborhood());
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                } catch (ExecutionException e) {
-                    e.printStackTrace();
-                }
-
-            }
-        });
-    }
-
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_client_persist, menu);
@@ -170,7 +158,7 @@ public class ClientPersistActivity extends AppCompatActivity {
         }
         client.setName(clientName.getText().toString());
         client.setAge(Integer.valueOf(clientAge.getText().toString()));
-        client.setPhone(client.getPhone());
+        client.setPhone(clientPhone.getText().toString());
         Address address = new Address();
         address.setCity(clientAddressCity.getText().toString());
         address.setStreet(clientAddressStreet.getText().toString());
@@ -222,6 +210,15 @@ public class ClientPersistActivity extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(Address address) {
+            try {
+                clientAddressCity.setText(address.getCity());
+                clientAddressState.setText(address.getState());
+                clientAddressStreet.setText(address.getStreet());
+                clientAddressZipCode.setText(address.getZipCode());
+                clientAddressNeighborhood.setText(address.getNeighborhood());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
             progressDialog.dismiss();
         }
     }

@@ -3,10 +3,8 @@ package com.example.administrador.myapplication.model.entities;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import com.example.administrador.myapplication.model.persistence.MemoryClientRepository;
 import com.example.administrador.myapplication.model.persistence.SQLiteClientRepository;
 
-import java.io.Serializable;
 import java.util.List;
 
 public class Client implements Parcelable{
@@ -74,7 +72,8 @@ public class Client implements Parcelable{
         return SQLiteClientRepository.getInstance().getAll();
     }
 
-    public void delete() {SQLiteClientRepository.getInstance().delete(this);}
+    public void delete() {
+        SQLiteClientRepository.getInstance().delete(this);}
 
     @Override
     public boolean equals(Object o) {

@@ -4,7 +4,7 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-public class DatabaseHelper extends SQLiteOpenHelper{
+public class DatabaseHelper extends SQLiteOpenHelper {
 
     private static final String BANCO_DADOS = "MY_DATABASE";
     private static final int VERSION = 1;
@@ -16,6 +16,8 @@ public class DatabaseHelper extends SQLiteOpenHelper{
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(ClientContract.getSqlCreateTable());
+        db.execSQL(UserContract.getSqlCreateTable());
+        db.insert(UserContract.TABLE, null, UserContract.initialInsert());
     }
 
     @Override
